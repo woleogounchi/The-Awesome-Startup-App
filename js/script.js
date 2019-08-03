@@ -29,9 +29,11 @@ xhr.onreadystatechange = function() {
                     </div>
                 </div>
             `
+                // Add the employees' cards to the page
             $('.gallery').append(galleryHTML);
         }
 
+        // function for displaying employee card
         function displayCard(i) {
             const thumbnail = employees.results[i].picture.thumbnail;
             const firstName = employees.results[i].name.first;
@@ -62,16 +64,17 @@ xhr.onreadystatechange = function() {
                 </div> 
             </div>
             `
-                //appends html to pop up window
+                // Append html to pop up window
             $("body").append(modal);
         }
 
-        //when clicked on employee card, modal container appears
+        // When clicked on employee card, modal container appears
         $('#gallery').on("click", ".card", function() {
             i = ($(this).index())
             displayCard(i);
         });
 
+        // Closing the employee card 
         $(".modal-close-btn").on("click", function() {
             $(".modal-container").remove();
         });
