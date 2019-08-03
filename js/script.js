@@ -1,22 +1,80 @@
+// *----Get and display 12 random users----*
+// We create a new variable xhr to hold our XML Http request through which, 
+// we will get data from the "Random User" api. 
 var xhr = new XMLHttpRequest();
-xhr.open('GET', 'https://randomuser.me/api/?results=12');
+xhr.open('GET', 'https://randomuser.me/api/?results=12&nat=U');
 xhr.onreadystatechange = function() {
+    // Upon readiness...
     if (xhr.readyState === 4 && xhr.status === 200) {
+        // ...we parse the provided data on JSON format
         var employees = JSON.parse(xhr.responseText);
-        var galleryHTML = "";
+
         for (let i = 0; i < employees.results.length; i++) {
-            galleryHTML += '<div class="card">';
-            galleryHTML += '<div class="card-img-container">';
-            galleryHTML += `<img class="card-img" src=${employees.results[i].picture.thumbnail} alt="profile picture">`;
-            galleryHTML += '</div>';
-            galleryHTML += '<div class="card-info-container">';
-            galleryHTML += `<h3 id="name" class="card-name cap">${employees.results[i].name.first} ${employees.results[i].name.last}</h3>`
-            galleryHTML += `<p class="card-text">${employees.results[i].email}</p>`
-            galleryHTML += `<p class="card-text cap">${employees.results[i].location.city}, ${employees.results[i].location.state}</p>`
-            galleryHTML += '</div>'
-            galleryHTML += '</div>';
+            const thumbnail = employees.results[i].picture.thumbnail;
+            const firstName = employees.results[i].name.first;
+            const lastName = employees.results[i].name.last;
+            const email = employees.results[i].email;
+            const city = employees.results[i].location.city;
+            const state = employees.results[i].location.state;
+
+            const galleryHTML = `
+            <div class="card">
+                    <div class="card-img-container">
+                        <img class="card-img" src="${thumbnail}" alt="profile picture">
+                    </div>
+                    <div class="card-info-container">
+                        <h3 id="name" class="card-name cap">${firstName} ${lastName}</h3>
+                        <p class="card-text">${email}</p>
+                        <p class="card-text cap">${city}, ${state}</p>
+                    </div>
+                </div>
+            `
+            $('.gallery').append(galleryHTML);
         }
-        document.getElementById('gallery').innerHTML = galleryHTML;
+
+        function displayCard(i) {
+            const thumbnail = employees.results[i].picture.thumbnail;
+            const firstName = employees.results[i].name.first;
+            const lastName = employees.results[i].name.last;
+            const email = employees.results[i].email;
+            const city = employees.results[i].location.city;
+            const state = employees.results[i].location.state;
+            // Additional data for each employees cards
+            const phone = employees.results[i].phone;
+            const street = employees.results[i].location.street.toUpperCase();
+            const birthMonth = employees.results[i].dob.date.slice(5, 7);
+            const birthDate = employees.results[i].dob.date.slice(8, 10);
+            const birthYear = employees.results[i].dob.date.slice(0, 4);
+
+            const modal = `
+            <div class="modal-container">
+                <div class="modal">
+                <button type="button" id ="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
+                <div class="modal-info-container">
+                    <img class ="modal-img" src="${thumbnail}" alt="profile picture">
+                    <h3 id="name" class="modal-name cap">${firstName} ${lastName}</h3> 
+                    <p class="modal-text">${email}</p> 
+                    <p class="modal-text cap">${city}</p> 
+                    <hr>
+                    <p class="modal-text">${phone}</p> 
+                    <p class="modal-text">${street}, ${city}, ${state} 97204</p> 
+                    <p class="modal-text">Birthday: ${birthMonth}/${birthDate}/${birthYear}</p> 
+                </div> 
+            </div>
+            `
+                //appends html to pop up window
+            $("body").append(modal);
+        }
+
+        //when clicked on employee card, modal container appears
+        $('#gallery').on("click", ".card", function() {
+            i = ($(this).index())
+            displayCard(i);
+        });
+
+        $(".modal-close-btn").on("click", function() {
+            $(".modal-container").remove();
+        });
     }
 }
 xhr.send();
