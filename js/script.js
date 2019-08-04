@@ -16,7 +16,8 @@ xhr.onreadystatechange = function() {
             const email = employees.results[i].email;
             const city = employees.results[i].location.city;
             const state = employees.results[i].location.state;
-
+            // We create a "galleryHTML" variable to hold the data 
+            // for each card
             const galleryHTML = `
             <div class="card">
                     <div class="card-img-container">
@@ -41,13 +42,13 @@ xhr.onreadystatechange = function() {
             const email = employees.results[i].email;
             const city = employees.results[i].location.city;
             const state = employees.results[i].location.state;
-            // Additional data for each employees cards
+            // Additional data displayed when employee's card is clicked
             const phone = employees.results[i].phone;
             const street = employees.results[i].location.street.toUpperCase();
             const birthMonth = employees.results[i].dob.date.slice(5, 7);
             const birthDate = employees.results[i].dob.date.slice(8, 10);
             const birthYear = employees.results[i].dob.date.slice(0, 4);
-
+            // The markup for each card when clicked
             const modal = `
             <div class="modal-container">
                 <div class="modal">
@@ -66,17 +67,17 @@ xhr.onreadystatechange = function() {
             `
                 // Append html to pop up window
             $("body").append(modal);
+
+            // Closing the employee card 
+            $(".modal-close-btn").on("click", function() {
+                $(".modal-container").remove();
+            });
         }
 
         // When clicked on employee card, modal container appears
         $('#gallery').on("click", ".card", function() {
             i = ($(this).index())
             displayCard(i);
-        });
-
-        // Closing the employee card 
-        $(".modal-close-btn").on("click", function() {
-            $(".modal-container").remove();
         });
     }
 }
