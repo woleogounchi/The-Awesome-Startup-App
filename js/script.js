@@ -48,7 +48,7 @@ xhr.onreadystatechange = function() {
             const birthMonth = employees.results[i].dob.date.slice(5, 7);
             const birthDate = employees.results[i].dob.date.slice(8, 10);
             const birthYear = employees.results[i].dob.date.slice(0, 4);
-            // The markup for each card when clicked
+            // The markup for the modal window
             const modal = `
             <div class="modal-container">
                 <div class="modal">
